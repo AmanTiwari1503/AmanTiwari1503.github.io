@@ -37,13 +37,18 @@ Username:<input type="text" name="user"><br /><br />
 Password:<input type="password" name="pass"><br /><br /> 
 <input type="submit" value="REGISTER" name="submit" />      
 </form> 
-<?php  
+<?php 
+$mysqli=new mysqli("localhost","root","","user_registration") or die(mysqli_error()); 
+$sqldata = "CREATE TABLE IF NOT EXISTS `login`(
+	`username` VARCHAR(200) NOT NULL,
+	`password` VARCHAR(200) NOT NULL,
+	PRIMARY KEY(`username`)
+	) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+$table=$mysqli->query($sqldata);
 if(isset($_POST["submit"])){  
 if(!empty($_POST['user']) && !empty($_POST['pass'])) {  
     $user=$_POST['user'];  
-    $pass=$_POST['pass'];  
-    $mysqli=new mysqli("localhost","root","","user_registration") or die(mysqli_error());  
-  
+    $pass=$_POST['pass'];   
     $query=$mysqli->query("SELECT * FROM login WHERE username='".$user."'");  
     $numrows=mysqli_num_rows($query);  
     if($numrows==0)  
@@ -61,6 +66,9 @@ if(!empty($_POST['user']) && !empty($_POST['pass'])) {
     echo '<div class="invalid">';
     echo "Account Successfully Created and Database ready";  
 	echo '</div>';
+	session_start();  
+    $_SESSION['sess_user']=$user; 
+	header("location:mem.php");
     } else {  
 	echo '<br>';
     echo '<div class="invalid">';
