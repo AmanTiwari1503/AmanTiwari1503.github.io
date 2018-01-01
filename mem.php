@@ -28,7 +28,8 @@ if(!isset($_SESSION["sess_user"])){
 }  
 .titles{
 	text-align:center;
-	border-bottom:2px solid black;
+	border:2px solid black;
+	border-radius:5px 5px 0px 0px;
 	padding:5px;
 	background:url('todo.jpg');
 	background-repeat:no-repeat;
@@ -42,6 +43,8 @@ if(!isset($_SESSION["sess_user"])){
 	background-repeat:no-repeat;
 	background-size:100% 100%;
 	color:white;
+	border:2px solid black;
+	border-radius:0px 0px 5px 5px;;
 }
 form{
 	text-align:center;
@@ -67,7 +70,14 @@ form{
 	margin-top:18px;
 	margin-right:15px;
 }
-    </style>  
+.invalid{
+	text-align:center;
+	color:red;
+}
+.delete{
+	float:right;
+}
+	    </style>  
 </head>  
 <body>  
 <h1 style="text-align:center;text-decoration:underline;">NoteStore</h1> 
@@ -94,9 +104,14 @@ $mysqli=new mysqli("localhost","root","","user_registration") or die(mysqli_erro
 		echo '<div class="todo">';
         echo '<div class="titles">';
 		echo $row["title"];
+		echo '<form action="delete.php" method="POST" class="delete">';
+		echo '<input type="hidden" name="var" value="'.$row["title"].'">';
+		echo '<input type="hidden" name="nameuser" value="'.$user.'">';
+		echo '<input type="submit" value="DELETE" name="sub">';
+		echo '</form>';
 		echo '</div>';
 		echo '<div class="descriptions">';
-		echo $row["description"];
+		echo '<p>'.$row["description"].'</p>';
 		echo '</div>';
 		echo '</div>';
 		echo '<br>';
@@ -118,23 +133,37 @@ if(!empty($_POST['title']) && !empty($_POST['description'])) {
 		echo '<div class="todo">';
 		echo '<div class="titles">';
 		echo $title;
+		echo '<form action="delete.php" method="POST" class="delete">';
+		echo '<input type="hidden" name="var" value="'.$title.'">';
+		echo '<input type="hidden" name="nameuser" value="'.$user.'">';
+		echo '<input type="submit" value="DELETE" name="sub">';
+		echo '</form>';
 		echo '</div>';
 		echo '<div class="descriptions">';
-		echo $description;
+		echo "<p>$description</p>";
 		echo '</div>';
 		echo '</div>';
 		
 	}
 	else{
-	echo 'Failure';
+	echo '<br>';
+    echo '<div class="invalid">';
+    echo "Failure";  
+	echo '</div>';
 	}
 	}
 	else {  
+    echo '<br>';
+    echo '<div class="invalid">';
     echo "That todo already exists! Please try again with another.";  
+	echo '</div>';
     }  
   
 } else {  
-    echo "All fields are required!"; 
+    echo '<br>';
+    echo '<div class="invalid">';
+    echo "All fields are required!";  
+	echo '</div>';
 }
 }
 ?>

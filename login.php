@@ -68,7 +68,13 @@ if(!empty($_POST['user']) && !empty($_POST['pass'])) {
   
     /* Redirect browser */  
     header("Location: mem.php");  
-    }  
+    }
+		else {  
+	echo '<br>';
+    echo '<div class="invalid">';
+	echo 'Invalid username or password!';
+	echo '</div>';
+    } 
     } else {  
 	echo '<br>';
     echo '<div class="invalid">';
